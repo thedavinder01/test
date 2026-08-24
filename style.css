@@ -1,0 +1,1064 @@
+/* ==========================================================
+   CYBER SECURITY EXAM SYSTEM — MAIN CSS
+   Design identity: "secure clearance document" —
+   a light, paper-white exam terminal with an electric-blue
+   security accent, monospace meta data (timer, question
+   index) reading like a terminal readout, and a padlock-
+   driven question palette that visualises the forward-only
+   rule at a glance.
+   ========================================================== */
+
+:root {
+  /* ---------- color tokens ---------- */
+  --bg: #eef2f8;
+  --bg-grid: #e4ebf5;
+  --surface: #ffffff;
+  --surface-alt: #f3f7fd;
+  --surface-tint: #eaf1fd;
+
+  --ink: #0b1f3a;
+  --ink-soft: #4b5f7a;
+  --ink-faint: #8598b3;
+
+  --accent: #0b5fff;
+  --accent-dark: #0742b8;
+  --accent-soft: #e3edff;
+
+  --success: #0e9f6e;
+  --success-soft: #e1f7ee;
+  --warning: #d97706;
+  --warning-soft: #fdf1de;
+  --danger: #dc2626;
+  --danger-soft: #fde8e8;
+
+  --border: #d8e3f1;
+  --border-strong: #b9c9de;
+
+  --shadow-sm: 0 1px 2px rgba(11, 31, 58, 0.06);
+  --shadow-md: 0 8px 24px rgba(11, 31, 58, 0.08);
+  --shadow-lg: 0 24px 60px rgba(11, 31, 58, 0.14);
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background:
+    linear-gradient(180deg, var(--bg-grid), var(--bg) 220px),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Faint security-grid texture across the whole app */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(11, 31, 58, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 31, 58, 0.028) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at 50% 0%, black, transparent 75%);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================
+   COMMON
+   ========================================== */
+
+.hidden {
+  display: none !important;
+}
+
+.page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.error {
+  color: var(--danger);
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  min-height: 1em;
+}
+
+button {
+  font-family: var(--font-body);
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+button:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, var(--shadow-md);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none !important;
+}
+
+.secondary {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1.5px solid var(--border-strong) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.secondary:hover {
+  background: var(--surface-alt) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent-dark) !important;
+}
+
+/* ==========================================================
+   LOGIN / ADMIN-LOGIN PAGES
+   ========================================== */
+
+.center-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.center-page::before,
+.center-page::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.center-page::before {
+  width: 420px;
+  height: 420px;
+  top: -140px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(11, 95, 255, 0.18), transparent 70%);
+}
+
+.center-page::after {
+  width: 380px;
+  height: 380px;
+  bottom: -160px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(14, 159, 110, 0.14), transparent 70%);
+}
+
+/* ==========================================================
+   LOGIN CARD
+   ========================================== */
+
+.login-card {
+  width: min(460px, 95vw);
+  padding: 42px 38px 36px;
+  position: relative;
+  z-index: 1;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: card-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* signature: an animated "clearance scan" beam across the top edge */
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 8%;
+  right: 8%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  background-size: 200% 100%;
+  animation: scan-sweep 3.2s ease-in-out infinite;
+}
+
+@keyframes scan-sweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-card h1 {
+  margin: 14px 0 6px;
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.login-card p {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* ==========================================================
+   BRAND
+   ========================================== */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  border: 1px solid var(--accent-soft);
+}
+
+/* ==========================================================
+   INPUTS
+   ========================================== */
+
+.login-card input {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin: 10px 0;
+  background: var(--surface-alt);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 15px;
+  font-family: var(--font-body);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.login-card input:focus {
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.login-card input::placeholder {
+  color: var(--ink-faint);
+}
+
+/* ==========================================================
+   LOGIN BUTTONS
+   ========================================== */
+
+.login-card button {
+  width: 100%;
+  margin: 8px 0 0;
+}
+
+/* ==========================================================
+   SUCCESS PAGE
+   ========================================== */
+
+.success-card {
+  max-width: 560px;
+}
+
+.big-icon {
+  font-size: 60px;
+  margin-bottom: 12px;
+  display: inline-block;
+  filter: drop-shadow(0 8px 18px rgba(14, 159, 110, 0.35));
+  animation: pop-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.success-card p {
+  font-size: 14.5px;
+}
+
+.success-card p b {
+  color: var(--ink);
+}
+
+/* ==========================================================
+   TOP NAVBAR
+   ========================================== */
+
+.topbar {
+  height: 66px;
+  padding: 0 26px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.topbar b {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  color: var(--ink);
+}
+
+.topbar span {
+  color: var(--danger);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 17px;
+  background: var(--danger-soft);
+  padding: 6px 12px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================
+   EXAM LAYOUT
+   ========================================== */
+
+.exam-layout {
+  max-width: 1450px;
+  margin: auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   SIDEBAR
+   ========================================== */
+
+.sidebar {
+  height: calc(100vh - 112px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  position: sticky;
+  top: 88px;
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar h3 {
+  margin-bottom: 16px;
+  color: var(--ink);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar h3::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* ==========================================================
+   QUESTION PALETTE
+   ========================================== */
+
+#palette {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+
+#palette button {
+  margin: 0;
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--border);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#palette button:hover:not(:disabled) {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-dark);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ANSWERED */
+#palette button.answered {
+  background: var(--success-soft);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* NON MCQ (unanswered, still open) */
+#palette button.nonmcq {
+  border-style: dashed;
+  border-color: #7fb0ff;
+}
+
+#palette button.nonmcq.answered {
+  border-style: solid;
+}
+
+/* CURRENT */
+#palette button.active {
+  outline: 3px solid var(--warning);
+  outline-offset: 1px;
+  background: var(--warning-soft);
+  border-color: var(--warning);
+  color: var(--warning);
+  transform: scale(1.06);
+}
+
+/* LOCKED — already left behind, cannot be revisited */
+#palette button.locked {
+  background: #eef1f6;
+  border-color: var(--border);
+  color: var(--ink-faint);
+  font-size: 13px;
+  cursor: not-allowed;
+}
+
+#palette button.locked.answered {
+  background: #eef1f6;
+  border-color: var(--border);
+  color: var(--ink-faint);
+}
+
+/* ==========================================================
+   LEGEND
+   ========================================== */
+
+.legend {
+  font-size: 12px;
+  display: grid;
+  gap: 9px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================
+   QUESTION CARD
+   ========================================== */
+
+.question-card {
+  min-height: 620px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 30px 32px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.question-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+}
+
+/* ==========================================================
+   QUESTION META
+   ========================================== */
+
+.exam-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+}
+
+#questionType {
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 1px;
+  background: var(--accent-soft);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+#questionNumber {
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-size: 12.5px;
+}
+
+/* ==========================================================
+   QUESTION TEXT
+   ========================================== */
+
+.question-card h2 {
+  font-size: 22px;
+  line-height: 1.55;
+  margin: 26px 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ==========================================================
+   MCQ OPTIONS
+   ========================================== */
+
+.option {
+  display: block;
+  padding: 15px 17px;
+  margin: 11px 0;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+}
+
+.option:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateX(4px);
+}
+
+.option:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.option input {
+  margin-right: 11px;
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.option b {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================
+   NON-MCQ TEXTAREA
+   ========================================== */
+
+.answer-box {
+  width: 100%;
+  min-height: 220px;
+  padding: 17px;
+  resize: vertical;
+  background: var(--surface-alt);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.answer-box:focus {
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* ==========================================================
+   LOCK NOTICE
+   ========================================== */
+
+.lock-notice {
+  margin-top: 22px;
+  padding: 11px 14px;
+  background: var(--warning-soft);
+  border: 1px dashed var(--warning);
+  border-radius: var(--radius-sm);
+  color: #92590a;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================
+   NAVIGATION BUTTONS
+   ========================================== */
+
+.nav-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.nav-buttons button {
+  min-width: 120px;
+}
+
+/* ==========================================================
+   SUBMIT BUTTON
+   ========================================== */
+
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(90deg, var(--success), #0bb47d);
+  margin-top: 22px;
+  padding: 15px;
+  font-size: 15px;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #0bb47d, #14c98a);
+}
+
+/* ==========================================================
+   ADMIN DASHBOARD
+   ========================================== */
+
+.admin-main {
+  max-width: 1500px;
+  margin: auto;
+  padding: 26px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   ADMIN STATS
+   ========================================== */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.stats div {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+}
+
+.stats div:nth-child(2)::before {
+  background: var(--success);
+}
+
+.stats div:nth-child(3)::before {
+  background: var(--warning);
+}
+
+.stats b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.stats span {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================
+   ADMIN CARD
+   ========================================== */
+
+.admin-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-card h2 {
+  margin-bottom: 6px;
+  font-size: 19px;
+}
+
+/* ==========================================================
+   TABLE
+   ========================================== */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.admin-card table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 950px;
+}
+
+.admin-card th,
+.admin-card td {
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+  font-size: 13.5px;
+}
+
+.admin-card th {
+  background: var(--surface-tint);
+  color: var(--accent-dark);
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
+.admin-card tbody tr {
+  transition: background 0.15s;
+}
+
+.admin-card tbody tr:hover td {
+  background: var(--accent-soft);
+}
+
+.admin-card tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================
+   STATUS
+   ========================================== */
+
+.status-pending {
+  color: var(--warning);
+  font-weight: 700;
+  background: var(--warning-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status-done {
+  color: var(--success);
+  font-weight: 700;
+  background: var(--success-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* ==========================================================
+   EVALUATION BOX
+   ========================================== */
+
+.eval-item {
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  margin: 14px 0;
+  background: var(--surface-alt);
+}
+
+.eval-item p {
+  line-height: 1.65;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.eval-item b {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================
+   MARKS INPUT
+   ========================================== */
+
+.marks-input {
+  width: 120px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.marks-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* ==========================================================
+   NO ANSWER
+   ========================================== */
+
+.no-answer {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* ==========================================================
+   ADMIN BUTTONS
+   ========================================== */
+
+.small-btn {
+  padding: 9px 14px;
+  margin: 2px;
+  font-size: 12.5px;
+}
+
+.danger {
+  background: var(--danger) !important;
+}
+
+.danger:hover {
+  background: #b91c1c !important;
+}
+
+/* ==========================================================
+   SCROLLBAR
+   ========================================== */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ==========================================================
+   SELECTION
+   ========================================== */
+
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1000px) {
+  .exam-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    height: auto;
+    position: relative;
+    top: 0;
+  }
+
+  #palette {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    padding: 0 14px;
+  }
+
+  .topbar b {
+    font-size: 13.5px;
+  }
+
+  .topbar span {
+    font-size: 13px;
+    padding: 5px 9px;
+  }
+
+  .exam-layout {
+    padding: 12px;
+  }
+
+  .question-card {
+    padding: 20px;
+  }
+
+  .question-card h2 {
+    font-size: 19px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-main {
+    padding: 12px;
+  }
+
+  .admin-card {
+    padding: 16px;
+  }
+
+  #palette {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .nav-buttons {
+    flex-wrap: wrap;
+  }
+
+  .nav-buttons button {
+    flex: 1;
+    min-width: 90px;
+  }
+}
+
+@media (max-width: 450px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .login-card h1 {
+    font-size: 22px;
+  }
+
+  #palette {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .exam-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

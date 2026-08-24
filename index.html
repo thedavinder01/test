@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Security Exam System</title>
+  <meta name="theme-color" content="#0B5FFF">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div id="loginPage" class="page center-page">
+    <div class="login-card">
+      <div class="brand">CYBER SECURITY EXAM</div>
+      <input id="studentName" type="text" placeholder="Student Name">
+      <input id="rollNo" type="text" placeholder="Roll Number">
+           <input id="college" type="text" placeholder="College">
+      <input id="studentBranch" type="text" placeholder="Branch (e.g. CSE, ECE)">
+      <input id="studentSection" type="text" placeholder="Section (e.g. A, B)">
+      <select id="studentYear">
+        <option value="">Select Year</option>
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year">3rd Year</option>
+        <option value="4th Year">4th Year</option>
+      </select>
+      <button onclick="startExam()">Start Exam</button>
+      <button class="secondary" onclick="showAdminLogin()">Admin Panel</button>
+    </div>
+  </div>
+
+  <div id="examPage" class="page hidden">
+    <header class="topbar">
+      <div><b>🛡️ Cyber Security Exam</b></div>
+      <div>Time Left: <span id="timer">60:00</span></div>
+    </header>
+    <main class="exam-layout">
+      <aside class="sidebar">
+        <h3>Question Palette</h3>
+        <div id="palette"></div>
+        <div class="legend">
+          <span>🟩 Answered</span><span>🟦 Non-MCQ</span><span>⬜ Unanswered</span><span>🔒 Locked</span>
+        </div>
+      </aside>
+      <section class="question-card">
+        <div class="exam-meta">
+          <span id="questionType"></span>
+          <span id="questionNumber"></span>
+        </div>
+        <h2 id="questionText"></h2>
+        <div id="answerArea"></div>
+        <p class="lock-notice">🔒 Once you leave this question, it will be locked and cannot be edited again.</p>
+        <div class="nav-buttons">
+          <button class="secondary" onclick="clearAnswer()">Clear</button>
+          <button onclick="nextQuestion()">Next →</button>
+        </div>
+        <button class="submit-btn" onclick="submitExam()">Submit Exam</button>
+      </section>
+    </main>
+  </div>
+
+  <div id="submittedPage" class="page center-page hidden">
+    <div class="login-card success-card">
+      <div class="big-icon">🔒</div>
+      <h1>Exam Submitted Successfully</h1>
+      <p>Your responses have been securely submitted.</p>
+      <p><b>Your result is not displayed to you.</b></p>
+      <p class="muted">The administrator will evaluate the Non-MCQ answers and publish/review the result.</p>
+    </div>
+  </div>
+
+  <div id="adminLoginPage" class="page center-page hidden">
+    <div class="login-card">
+      <div class="brand">🔐 ADMIN PANEL</div>
+      <h1>Administrator Login</h1>
+      <input id="adminUser" type="text" placeholder="Username">
+      <input id="adminPass" type="password" placeholder="Password">
+      <button onclick="adminLogin()">Login</button>
+      <button class="secondary" onclick="backToStudent()">Back</button>
+      <p id="adminError" class="error"></p>
+    </div>
+  </div>
+
+  <div id="adminPage" class="page hidden">
+    <header class="topbar">
+      <div><b>🔐 Admin Dashboard</b></div>
+      <div>
+        <button class="small-btn" onclick="exportExcel()">Export Excel</button>
+        <button class="small-btn danger" onclick="adminLogout()">Logout</button>
+      </div>
+    </header>
+    <main class="admin-main">
+      <div class="stats">
+        <div><b id="totalStudents">0</b><span>Total Students</span></div>
+        <div><b id="evaluatedStudents">0</b><span>Evaluated</span></div>
+        <div><b id="pendingStudents">0</b><span>Pending</span></div>
+      </div>
+
+      <div class="admin-card">
+        <h2>All Student Results</h2>
+        <p class="muted">Students cannot see this panel or their score/rank.</p>
+        <div class="table-wrap">
+          <table id="resultsTable">
+            <thead>
+              <tr>
+                <th>Rank</th><th>Name</th><th>Roll No.</th><th>Branch</th><th>Section</th><th>Year</th><th>MCQ</th>
+                <th>Non-MCQ</th><th>Total / 100</th><th>Correct / 75</th><th>%</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="evaluationBox" class="admin-card hidden">
+        <h2 id="evalTitle">Evaluate Non-MCQ</h2>
+        <div id="evalQuestions"></div>
+        <button onclick="saveEvaluation()">Save Evaluation</button>
+        <button class="secondary" onclick="closeEvaluation()">Cancel</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
